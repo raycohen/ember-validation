@@ -19,9 +19,12 @@ const validations = {
 export default Ember.Component.extend({
   init() {
     this._super(...arguments);
-    let errorsObject = setupValidations(this, validations);
-    this.set('errors', errorsObject);
+    let validationPack = setupValidations(this, validations);
+    this.set('validationPack', validationPack);
   },
+
+  isValid: computed.readOnly('validationPack.isValid'),
+  errors: computed.readOnly('validationPack.errors'),
 
   age: '12',
   parsedAge: computed('age', function() {

@@ -7,6 +7,32 @@ const {
   isEmpty
 } = Ember;
 
+function defineIsValid(validationPack, errors) {
+  let keys = Ember.A(Object.keys(errors)).without('_validatee').toArray();
+  let deps = keys.map(function(key) {
+    return `errors.${key}`;
+  });
+
+  let allEmpty = function() {
+    let result = true;
+    let self = this;
+    deps.forEach(function(dep) {
+      if (!isEmpty(self.get(dep))) {
+        result = false;
+      }
+    });
+    return result;
+  };
+
+  let computedArgs = deps.concat([allEmpty]);
+
+  defineProperty(
+    validationPack,
+    'isValid',
+    computed.apply(computed, computedArgs)
+  );
+}
+
 function errorsForValidationRule(validatee, key, ruleType, validationRules) {
   let errors = [];
   let value = validatee.get(key);
@@ -41,7 +67,6 @@ function errorsForProperty(validatee, key, validationRules) {
 
 function defineValidationProperties(validatee, errorsObject, validations) {
   for (let key in validations) {
-    console.log(key);
     assert(`Validation must only be on top-level properties. You passed ${key}`, key.indexOf('.') === -1);
 
     defineProperty(
@@ -59,10 +84,14 @@ function defineValidationProperties(validatee, errorsObject, validations) {
   }
 }
 
-export default function setupValidations(validatee, validations) {
-  let errorsObject = Ember.Object.create({
+export default function setupValidation(validatee, validations) {
+  let errors = Ember.Object.create({
     _validatee: validatee
   });
-  defineValidationProperties(validatee, errorsObject, validations);
-  return errorsObject;
+  defineValidationProperties(validatee, errors, validations);
+
+  let validationPack = Ember.Object.create({ errors });
+  defineIsValid(validationPack, errors);
+
+  return validationPack;
 }

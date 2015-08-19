@@ -18,4 +18,12 @@
       <span>Name errors: {{errors.name}}</span>
     </div>
   </div>
+
+  <div>
+    {{#if isValid}}
+      The form is valid!
+    {{else}}
+      No, not valid :(
+    {{/if}}
+  </div>
 </form>

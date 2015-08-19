@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import setupValidations from 'ember-validation/setup-validations';
+import ValidationPack from 'ember-validation/validation-pack';
 
 const {
   computed
@@ -19,7 +19,10 @@ const validations = {
 export default Ember.Component.extend({
   init() {
     this._super(...arguments);
-    let validationPack = setupValidations(this, validations);
+    let validationPack = ValidationPack.create({
+      validatee: this,
+      validations
+    });
     this.set('validationPack', validationPack);
   },
 

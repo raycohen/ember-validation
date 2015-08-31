@@ -19,11 +19,14 @@ const validations = {
 export default Ember.Component.extend({
   init() {
     this._super(...arguments);
-    let validation = Validation.create({
+    this.setupValidation();
+  },
+
+  setupValidation() {
+    this.set('validation', Validation.create({
       validatee: this,
       validations
-    });
-    this.set('validation', validation);
+    }));
   },
 
   isValid: computed.readOnly('validation.isValid'),

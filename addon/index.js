@@ -101,7 +101,7 @@ export default Ember.Object.extend({
     defineProperty(
       this,
       'isValid',
-      computed.apply(computed, computedArgs)
+      computed.apply(null, computedArgs)
     );
   }
 });

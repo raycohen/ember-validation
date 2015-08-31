@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ValidationPack from 'ember-validation/validation-pack';
+import Validation from 'ember-validation';
 
 const {
   computed
@@ -19,15 +19,15 @@ const validations = {
 export default Ember.Component.extend({
   init() {
     this._super(...arguments);
-    let validationPack = ValidationPack.create({
+    let validation = Validation.create({
       validatee: this,
       validations
     });
-    this.set('validationPack', validationPack);
+    this.set('validation', validation);
   },
 
-  isValid: computed.readOnly('validationPack.isValid'),
-  errors: computed.readOnly('validationPack.errors'),
+  isValid: computed.readOnly('validation.isValid'),
+  errors: computed.readOnly('validation.errors'),
 
   age: '12',
   parsedAge: computed('age', function() {

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import Validation from 'ember-validation/validation-pack';
+import Validation from 'ember-validation';
 import Ember from 'ember';
 
 module('validation', 'Unit | Validation');
